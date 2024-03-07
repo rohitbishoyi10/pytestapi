@@ -1,0 +1,74 @@
+bh_password: 'Endurance01!'
+environments:
+  com:
+    staging:
+      host_server: 'https://www.betabh.com'
+      my_host_server: 'https://my.betabh.com'
+
+    prod:
+      host_server: 'https://www.bluehost.com'
+      my_host_server: 'https://my.bluehost.com'
+
+  in:
+    alpha:
+      host_server: 'https://www.vinitas.alpha.bluehost.in'
+      my_host_server: 'https://my.vinitas.alpha.bluehost.in'
+      i_host_server: 'https://i.vinitas.alpha.bluehost.in'
+
+    staging:
+      host_server: 'https://www.beta.bluehost.in'
+      my_host_server: 'https://my.beta.bluehost.in'
+      i_host_server: 'https://i.beta.bluehost.in'
+
+    prod:
+      host_server: 'https://www.bluehost.in'
+      my_host_server: 'https://my.bluehost.in'
+      i_host_server: 'https://i.bluehost.in'
+
+  sg:
+    alpha:
+      host_server: 'https://www.vinitas.alpha.bluehostasia.com'
+      my_host_server: 'https://my.vinitas.alpha.bluehostasia.com'
+
+    staging:
+      host_server: 'https://www.beta.bluehostasia.com'
+      my_host_server: 'https://my.beta.bluehostasia.com'
+      i_host_server: 'https://i.beta.bluehostasia.com'
+
+    prod:
+      host_server: 'https://www.bluehostasia.com'
+      my_host_server: 'https://my.bluehostasia.com'
+
+cookies:
+  com:
+    country: 'USA'
+    currency: 'USD'
+    PreferredCurrency: 'USD'
+    Currency_Symbol: '$'
+    cybGeoIPData: 'India'
+
+  in:
+    country: 'USA'
+    PreferredCurrency: 'INR'
+    currency: 'INR'
+    Currency: 'INR'
+    Currency_Symbol: '%26%238377%3B'
+    cybGeoIPData: 'India'
+
+  sg:
+    country: 'SG'
+    PreferredCurrency: 'SGD'
+    currency: 'SGD'
+    Currency_Symbol: 'S$'
+    cybGeoIPData: 'India'
+
+
+headers:
+  com:
+    Accept-Language: 'en-US,en;q=0.9'
+
+  in:
+    Accept-Language: 'en-GB,en;q=0.9'
+
+  sg:
+    Accept-Language: 'en-US,en;q=0.5'

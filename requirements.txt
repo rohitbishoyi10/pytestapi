@@ -1,0 +1,16 @@
+requests==2.25.1
+configobj
+lxml
+testfixtures
+mock
+pyotp
+pyjwt
+beautifulsoup4
+pyyaml
+apiritif
+pytest
+funcy
+allure-pytest
+allure-python-commons
+pytest-xdist
+pydantic

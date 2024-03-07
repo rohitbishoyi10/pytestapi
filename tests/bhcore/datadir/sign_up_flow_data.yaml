@@ -1,0 +1,86 @@
+# Hosting_Template:
+hosting_plans_data:
+  Hosting_Type1:
+    data: 'shared'
+    type1:
+      data: 'basic'
+    type2:
+      data: 'plus'
+    type3:
+      data: 'pro'
+    type4:
+      data: 'choice_plus'
+
+  Hosting_Type2:
+    data: 'ecom'
+    plan1:
+      data: 'starter'
+    plan2:
+      data: 'plus'
+    plan3:
+      data: 'pro'
+
+  Hosting_Type3:
+    data: 'wppro'
+    ignore:
+    type1:
+      data: 'build'
+    type2:
+      data: 'grow'
+    type3:
+      data: 'scale'
+
+  Hosting_Type4:
+    data: 'vps'
+    ignore:
+    type1:
+      data: 'standard'
+    type2:
+      data: 'enhanced'
+    type3:
+      data: 'ultimate'
+
+  Hosting_Type5:
+    data: 'dedicated'
+    ignore:
+    type1:
+      data: 'standard'
+    type2:
+      data: 'enhanced'
+    type3:
+      data: 'premium'
+
+domain_action_data:
+  new_domain:
+    data: 'register'
+  existing_domain:
+    data: 'transfer'
+  domainless:
+    data: 'domainless'
+    ignore:
+
+hosting_term_data:
+  one_year_term:
+    data: 1
+  two_year_term:
+    data: 2
+  three_year_term:
+    data: 3
+
+payment_method_data:
+  pay_using_check:
+    data: 'check'
+  pay_using_card:
+    data: 'card'
+    ignore:
+  pay_using_payu:
+    data: 'payU'
+    ignore:
+
+tlds_data:
+  com:
+    data: 'com'
+  in:
+    data: 'in'
+  sg:
+    data: 'sg'

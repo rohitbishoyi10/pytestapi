@@ -1,0 +1,22 @@
+.idea/**
+.DS_Store
+
+## Ignore reporting related Files ##
+*.html
+*.json
+*.log
+
+allure-results**
+log.html
+report.html
+output.xml
+selenium-screenshot**.png
+**/selenium-screenshot**.png
+
+
+## Ignore the Virtual Env File
+venv**
+virtual_env**
+__pycache__/
+*.pyc
+test-output

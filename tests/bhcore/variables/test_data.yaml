@@ -1,0 +1,200 @@
+shared:
+  basic:
+    sku: 'c85378f7'
+    plan: 'cpanel_plan=basic'
+    type: 'cpanel_plan'
+    subtype: 'basic'
+    price:
+      '12': [['4644.48','4233.84','4233.84'],['13579.44','13579.44']]
+      '24': [['7745.52','7334.88','7334.88'],['13579.44','13579.44']]
+      '36': [['8864.16','8453.52'],['13579.44','13579.44']]
+
+  plus:
+    sku: '50d107d1'
+    plan: 'cpanel_plan=plus'
+    type: 'cpanel_plan'
+    subtype: 'plus'
+  choice_plus:
+    sku: '54384e4e'
+    plan: 'cpanel_plan=prime'
+    type: 'cpanel_plan'
+    subtype: 'prime'
+  pro:
+    sku: 'd71a96ef'
+    plan: 'cpanel_plan=pro'
+    type: 'cpanel_plan'
+    subtype: 'pro'
+
+vps:
+  standard:
+    sku: ''
+    plan: ''
+  enhanced:
+    sku: ''
+    plan: ''
+  ultimate:
+    sku: ''
+    plan: ''
+
+dedicated:
+  standard:
+    sku: '89d0037e'
+    plan: 'hosting_plan=dedicated:standard_ssd'
+    type: 'hosting_plan'
+    subtype: 'standard_ssd'
+  enhanced:
+    sku: '5d61e38f'
+    plan: 'hosting_plan=dedicated:enhanced_ssd'
+    type: 'hosting_plan'
+    subtype: 'enhanced_ssd'
+  premium:
+    sku: '69cd7add'
+    plan: 'hosting_plan=dedicated:premium_ssd'
+    type: 'hosting_plan'
+    subtype: 'premium_ssd'
+
+ecom:
+  starter:
+    sku: '20a5de35'
+    plan: 'cpanel_plan=wc_starter'
+    type: 'cpanel_plan'
+    subtype: 'wc_starter'
+    price:
+      '12': [['13579.44','13579.44','13579.44'],['13579.44','13579.44']]
+      '24': [['15830.88','15830.88','15830.88'],['13579.44','13579.44']]
+      '36': [['19498.32','19498.32'],['13579.44','13579.44']]
+
+
+  plus:
+    sku: '71bb24cc'
+    plan: 'cpanel_plan=wc_plus'
+    type: 'cpanel_plan'
+    subtype: 'wc_plus'
+  pro:
+      sku: 'dc6ef1c8'
+      plan: 'cpanel_plan=wc_pro'
+      type: 'cpanel_plan'
+      subtype: 'wc_pro'
+
+wppro:
+  build:
+    sku: '74a93f00'
+    plan: 'cpanel_plan=wppro_build'
+    type: 'cpanel_plan'
+    subtype: 'wppro_build'
+    price:
+      '3': [['6226.86','6226.86','6226.86'],['13579.44','13579.44']]
+      '6': [['11745.72','11745.72','11745.72'],['13579.44','13579.44']]
+      '12': [['22075.44','22075.44','22075.44'],['13579.44','13579.44']]
+      '24': [['41318.88','41318.88','41318.88'],['13579.44','13579.44']]
+      '36': [['53482.32','53482.32','53482.32'],['13579.44','13579.44']]
+
+  grow:
+    sku: 'd45cf4a6'
+    plan: 'cpanel_plan=wppro_grow'
+    type: 'cpanel_plan'
+    subtype: 'wppro_grow'
+  scale:
+    sku: 'c9d1aa04'
+    plan: 'cpanel_plan=wppro_scale'
+    type: 'cpanel_plan'
+    subtype: 'wppro_scale'
+
+freetrial:
+  blog:
+    sku: 'd5f3f07e'
+    plan: 'cpanel_plan=blog'
+    type: ''
+    subtype: ''
+    TERM: '1'
+  packageInfo:
+    primary_domain_registration:
+      sku: '1efab49e'
+      term: '12'
+
+
+#AddOns
+Package_Extras:
+  domain_privacy_protection:
+    sku: '68deb436'
+    term: '12'
+    type: 'privacy'
+    family: 'addon'
+  codeguard:
+    basic:
+      sku: 'b845abaa'
+      term: ['12', '24', '36']
+      type: 'codeguard'
+      family: 'addon'
+  marketgoo:
+    start:
+      sku: '160da8aa'
+      term: '12'
+      type: 'seotools'
+      family: 'addon'
+  sitelock:
+    essential:
+      sku: '9deb4f7c'
+      term: '12'
+      type: 'sitelockessential'
+      family: 'addon'
+  office365:
+    business_essentials:
+      sku: 'a0c6d1a3'
+      term: '1'
+      type: 'office365'
+      family: 'addon'
+
+#Profesional Email Plans below
+businessplus:
+  basic:
+    sku: 'c85378f7'
+    plan: 'cpanel_plan=basic'
+    type: 'cpanel_plan'
+    subtype: 'basic'
+    flow: 'office365businessplus'
+  plus:
+    sku: '50d107d1'
+    plan: 'cpanel_plan=plus'
+    type: 'cpanel_plan'
+    subtype: 'plus'
+    flow: 'office365businessplus'
+  choice_plus:
+    sku: '54384e4e'
+    plan: 'cpanel_plan=prime'
+    type: 'cpanel_plan'
+    subtype: 'prime'
+    flow: 'office365businessplus'
+  pro:
+    sku: 'd71a96ef'
+    plan: 'cpanel_plan=pro'
+    type: 'cpanel_plan'
+    subtype: 'pro'
+    flow: 'office365businessplus'
+businesspro:
+  basic:
+    sku: 'c85378f7'
+    plan: 'cpanel_plan=basic'
+    type: 'cpanel_plan'
+    subtype: 'basic'
+    flow: 'office365businesspro'
+  plus:
+    sku: '50d107d1'
+    plan: 'cpanel_plan=plus'
+    type: 'cpanel_plan'
+    subtype: 'plus'
+    flow: 'office365businesspro'
+  choice_plus:
+    sku: '54384e4e'
+    plan: 'cpanel_plan=prime'
+    type: 'cpanel_plan'
+    subtype: 'prime'
+    flow: 'office365businesspro'
+  pro:
+    sku: 'd71a96ef'
+    plan: 'cpanel_plan=pro'
+    type: 'cpanel_plan'
+    subtype: 'pro'
+    flow: 'office365businesspro'
+
+TERM: '36'

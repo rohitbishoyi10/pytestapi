@@ -1,0 +1,171 @@
+import hudson.tasks.test.AbstractTestResultAction
+def status = ""
+
+@NonCPS
+def testStatuses() {
+    def testStatus = ""
+    AbstractTestResultAction testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
+    if (testResultAction != null) {
+        def total = testResultAction.totalCount
+        def failed = testResultAction.failCount
+        def skipped = testResultAction.skipCount
+        def passed = total - failed - skipped
+        testStatus = "Total: ${total}, Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}"
+    }
+    return testStatus
+}
+
+@NonCPS
+def overallStatus() {
+    AbstractTestResultAction testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
+    if (testResultAction != null) {
+        def failed = testResultAction.failCount
+        if (failed > 0) {
+            status = "FAILURE"
+        }
+        else {
+            status = "SUCCESS"
+        }
+    }
+    return status
+}
+
+node('xvfb')
+{
+    withEnv(['PATH+PluginsPath=/home/jenkins/.local/bin', 'PATH+PabotPath=/home/jenkins/.local/lib/python3.6/site-packages'])
+    {
+        timeout(time: 500, unit: 'MINUTES')
+        {
+            def stash_url = env.STASH_REPO_URL
+            def stash_branch = env.STASH_REPO_BRANCH
+            def marker = env.MARKERS
+            def chat_notification_group = env.Google_Group_Identifier
+            def error_manager = '' // To capture & log error that might occur in various stages of this build.
+
+            stage("check python version")
+            {
+                sh "python3 --version"
+            }
+            stage("environment setup")
+            {
+                git url: stash_url, branch: stash_branch, credentialsId: "bluehost-apac-stashsecret"
+                sh "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py"
+                sh "python3 get-pip.py --user"
+                sh "pip3 install --user --upgrade pip"
+                sh "pip3 install --user --trusted-host pypi.python.org -r requirements.txt"
+            }
+            stage("Test Execution")
+            {
+                try
+                {
+                        echo "Env value : ${ENVIRONMENT}"
+                        echo "Local value : ${LOCAL}"
+                        def excludeIncludeOptions = ''
+                        def server = ''
+                        excludeIncludeOptions = '--include apihosting --include bvts --exclude disableexecution'
+                        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'roaster-ad-creds', usernameVariable: 'ROASTER_AD_USERNAME', passwordVariable: 'ROASTER_AD_PASSWORD']])
+                        {
+/*                            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'bhapac-staging-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']])
+                            {
+                                sh "pytest -v -s -rA -n 9 -m ${marker} tests/bhcore/testsuite --env ${ENVIRONMENT} --local ${LOCAL} --BH_AD_USERNAME_VARIABLE $ROASTER_AD_USERNAME --BH_AD_PASSWORD_VARIABLE '$ROASTER_AD_PASSWORD' --junitxml='result.xml'"
+                            } */
+                        if(marker == 'p0')
+                        {
+                        sh "pytest -v -s -rA -n 9 tests/bhcore/testsuite/criticality_p0 --env ${ENVIRONMENT} --local ${LOCAL} --BH_AD_USERNAME_VARIABLE $ROASTER_AD_USERNAME --BH_AD_PASSWORD_VARIABLE '$ROASTER_AD_PASSWORD' --junitxml='result.xml'"
+                        }
+                        if(marker == 'p1')
+                        {
+                        sh "pytest -v -s -rA -n 9 tests/bhcore/testsuite/criticality_p1 --env ${ENVIRONMENT} --local ${LOCAL} --BH_AD_USERNAME_VARIABLE $ROASTER_AD_USERNAME --BH_AD_PASSWORD_VARIABLE '$ROASTER_AD_PASSWORD' --junitxml='result.xml'"
+                        }
+                        }
+                }catch (err)
+                {
+                        error_manager = error_manager+'Stage : Test Execution\t|| Error : '+err+'\n'
+                        echo "Caught: ${err}"
+                }
+            }
+            stage ("Reporting")
+            {
+                try{
+                    allure([includeProperties: false, jdk: 'Java', properties: [], reportBuildPolicy: 'ALWAYS', results: [[path: '/allure-results']]])
+                }catch (err)
+                {
+                        error_manager = error_manager+'Stage : Reporting\t|| Error : '+err+'\n'
+                        echo "Caught: ${err}"
+                }
+            }
+            stage ("Notification")
+            {
+                junit 'result.xml'
+                if(chat_notification_group == 'BH-APAC Expansion SDET')
+                {
+                    echo "Sending reports to group : ${chat_notification_group}"
+                    try
+                    {
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/AAAASRH1zEQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=HklbWGafaPcGzvvC7gnBi3suOLv0d7eYo3DDIixO4R0%3D&threadKey=jenkins",
+                        message: "API Automation BVTS - ${marker}:\nENV : ${ENVIRONMENT}    ||    BUILD DETAILS : #${BUILD_NUMBER} <${env.BUILD_URL}|View Build> or <${env.BUILD_URL}allure/|View Allure Report>  |\nTEST METRICS : ${testStatuses()} |",
+                        sameThreadNotification: false
+                    }catch (err)
+                    {
+                        error_manager = error_manager + 'Stage : Notification\t|| Error : '+err+'\n'
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/AAAASRH1zEQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=HklbWGafaPcGzvvC7gnBi3suOLv0d7eYo3DDIixO4R0%3D&threadKey=jenkins",
+                        message: "Test Build Report : API Automation : Error occured.\n  ${error_manager} ",
+                        sameThreadNotification: false
+                    }
+                }
+                else if(chat_notification_group == 'SDET Engg Group')
+                {
+                    echo "Sending reports to group : ${chat_notification_group}"
+                    try
+                    {
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/nxegNQAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=VOeMLq_GCflzPA2ldzpLxqzX1FOoH0B3hY0sMfFIKKY%3D&threadKey=jenkins",
+                        message: "API Automation BVTS - ${marker}:\nENV : ${ENVIRONMENT}    ||    BUILD DETAILS : #${BUILD_NUMBER} <${env.BUILD_URL}|View Build> or <${env.BUILD_URL}allure/|View Allure Report>  |\nTEST METRICS : ${testStatuses()} |",
+                        sameThreadNotification: false
+                    }catch (err)
+                    {
+                        error_manager = error_manager + 'Stage : Notification\t|| Error : '+err+'\n'
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/nxegNQAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=VOeMLq_GCflzPA2ldzpLxqzX1FOoH0B3hY0sMfFIKKY%3D&threadKey=jenkins",
+                        message: "Test Build Report : API Automation : Error occured.\n  ${error_manager} ",
+                        sameThreadNotification: false
+                    }
+                }
+                else if(chat_notification_group == 'Personal Debug Group - Aditya')
+                {
+                    echo "Sending reports to group : ${chat_notification_group}"
+                    try
+                    {
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/AAAAHn5CalM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=YeNw0_uMZh_kGB9mRiZDziUiI9JRA7NFCvp8fK2_EBI%3D&threadKey=jenkins",
+                        message: "API Automation BVTS - ${marker}:\nENV : ${ENVIRONMENT}    ||    BUILD DETAILS : #${BUILD_NUMBER} <${env.BUILD_URL}|View Build> or <${env.BUILD_URL}allure/|View Allure Report>  |\nTEST METRICS : ${testStatuses()} |",
+                        sameThreadNotification: false
+                    }catch (err)
+                    {
+                        error_manager = error_manager + 'Stage : Notification\t|| Error : '+err+'\n'
+                        googlechatnotification url: "https://chat.googleapis.com/v1/spaces/AAAAHn5CalM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=YeNw0_uMZh_kGB9mRiZDziUiI9JRA7NFCvp8fK2_EBI%3D&threadKey=jenkins",
+                        message: "Test Build Report : API Automation : Error occured.\n  ${error_manager} ",
+                        sameThreadNotification: false
+                    }
+                }
+                else if (chat_notification_group == 'None')
+                {
+                    echo "Skipping Reporting Notification"
+                }
+                else
+                {
+                    echo "Sending reports to group with web-hook : ${chat_notification_group}"
+                    try
+                    {
+                        googlechatnotification url: chat_notification_group+"&threadKey=jenkins",
+                        message: "API Automation BVTS - ${marker}:\nENV : ${ENVIRONMENT}    ||    BUILD DETAILS : #${BUILD_NUMBER} <${env.BUILD_URL}|View Build> or <${env.BUILD_URL}allure/|View Allure Report>  |\nTEST METRICS : ${testStatuses()} |",
+                        sameThreadNotification: false
+                    }catch (err)
+                    {
+                        error_manager = error_manager + 'Stage : Notification\t|| Error : '+err+'\n'
+                        googlechatnotification url: chat_notification_group+"&threadKey=jenkins",
+                        message: "Test Build Report : API Automation : Error occured.\n  ${error_manager} ",
+                        sameThreadNotification: false
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,99 @@
+hosting:
+  shared:
+    basic:
+      sku: 'c85378f7'
+      subtype: 'basic'
+      description: 'Basic Web Hosting'
+      family: 'hosting'
+    plus:
+      sku: '50d107d1'
+      subtype: 'plus'
+      description: 'Plus Hosting'
+      family: 'hosting'
+    choice_plus:
+      sku: '54384e4e'
+      subtype: 'prime'
+      description: 'Prime Hosting'
+      family: 'hosting'
+    pro:
+      sku: 'd71a96ef'
+      subtype: 'pro'
+      description: 'Pro Hosting'
+      family: 'hosting'
+  dedicated:
+    standard:
+      sku: '89d0037e'
+      subtype: 'standard_ssd'
+      description: 'Standard Hosting'
+      family: 'hosting'
+    enhanced:
+      sku: '5d61e38f'
+      subtype: 'enhanced_ssd'
+      description: 'Enhanced Hosting'
+      family: 'hosting'
+    premium:
+      sku: '69cd7add'
+      subtype: 'premium_ssd'
+      description: 'Premium Hosting'
+      family: 'hosting'
+  ecom:
+    starter:
+      sku: '20a5de35'
+      subtype: 'wc_starter'
+      description: 'Starter Hosting'
+      family: 'hosting'
+    plus:
+      sku: '71bb24cc'
+      subtype: 'wc_plus'
+      description: 'Plus Hosting'
+      family: 'hosting'
+    pro:
+      sku: 'dc6ef1c8'
+      subtype: 'wc_pro'
+      description: 'Pro Hosting'
+      family: 'hosting'
+  wppro:
+    build:
+      sku: '74a93f00'
+      subtype: 'wppro_build'
+      description: 'Build Hosting'
+      family: 'hosting'
+    grow:
+      sku: 'd45cf4a6'
+      subtype: 'wppro_grow'
+      description: 'Grow Hosting'
+      family: 'hosting'
+    scale:
+      sku: 'c9d1aa04'
+      subtype: 'wppro_scale'
+      description: 'Scale Hosting'
+      family: 'hosting'
+  freetrial:
+    blog:
+      sku: 'd5f3f07e'
+      subtype: ''
+      TERM: '1'
+      description: 'Freetrial Hosting'
+      family: 'hosting'
+  TERM: '36'
+
+add-ons:
+#  Domain Privacy Protection
+  DPP:
+    sku: '68deb436'
+    description: 'Domain Privacy + Protection'
+    type: 'privacy'
+    family: 'addon'
+#  Domain Name Registration
+  DNR:
+    sku: '1efab49e'
+    description: 'Domain Name Registration'
+    type: 'privacy'
+    family: 'domains'
+#  SiteLock Security
+  SLS:
+    sku: '494ec860'
+    description: 'SiteLock Security - Free'
+    type: 'sitelock'
+    family: 'addon'
+    subtype: 'free'
